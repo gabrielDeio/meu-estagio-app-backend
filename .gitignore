@@ -1,0 +1,56 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+env/
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage / testing
+.coverage
+htmlcov/
+.cache/
+pytest_cache/
+
+# MyPy / Type checker
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# FastAPI specific
+# (se usar Uvicorn ou Gunicorn, pode gerar arquivos temporários)
+*.pid
+
+# Pydantic settings cache
+.pytest_cache/
+*.sqlite3
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment files
+.env
+.env.*
+
+
+app-backend/
