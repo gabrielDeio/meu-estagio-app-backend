@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict sYk7XrPjPcc76SXYRjxuL7HAUbNnrZ9cpNqlWQbihpzzXoF7YBKPRCHUlfA2kw3
+\restrict 83qgmFD1yj7B0U37uYgEW172pvNZoTjDbsrR2bSReaawNwPG5o2zjAukdoHBdci
 
 -- Dumped from database version 13.22 (Debian 13.22-1.pgdg13+1)
 -- Dumped by pg_dump version 13.22 (Debian 13.22-1.pgdg13+1)
@@ -26,12 +26,27 @@ ALTER TABLE ONLY core.org_user DROP CONSTRAINT org_user_pk;
 DROP TABLE core."user";
 DROP TABLE core.organization;
 DROP TABLE core.org_user;
+DROP EXTENSION "uuid-ossp";
 DROP SCHEMA core;
 --
 -- Name: core; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA core;
+
+
+--
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
 SET default_tablespace = '';
@@ -48,7 +63,7 @@ CREATE TABLE core.org_user (
     type character varying NOT NULL,
     role character varying,
     status character varying NOT NULL,
-    created_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
     finished_at timestamp with time zone
 );
 
@@ -58,11 +73,11 @@ CREATE TABLE core.org_user (
 --
 
 CREATE TABLE core.organization (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     name character varying NOT NULL,
     supervisor_max_amount smallint NOT NULL,
     cnpj character varying NOT NULL,
-    created_at timestamp with time zone NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -71,13 +86,13 @@ CREATE TABLE core.organization (
 --
 
 CREATE TABLE core."user" (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     name character varying NOT NULL,
     surname character varying,
     email character varying NOT NULL,
     password character varying NOT NULL,
     type character varying NOT NULL,
-    created_at timestamp with time zone NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -125,5 +140,5 @@ ALTER TABLE ONLY core."user"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict sYk7XrPjPcc76SXYRjxuL7HAUbNnrZ9cpNqlWQbihpzzXoF7YBKPRCHUlfA2kw3
+\unrestrict 83qgmFD1yj7B0U37uYgEW172pvNZoTjDbsrR2bSReaawNwPG5o2zjAukdoHBdci
 
