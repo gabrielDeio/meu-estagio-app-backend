@@ -5,6 +5,7 @@ from sqlmodel import Session, select
 from app.models.user import User
 from app.schemas.user_schema import UserCreate, UserUpdate
 from app.utils.hash import get_password_hash
+from app.models.user import UserTypeEnum
 
 def get_user_by_id(db : Session, user_id : UUID) -> Optional[User]:
     """
@@ -12,11 +13,11 @@ def get_user_by_id(db : Session, user_id : UUID) -> Optional[User]:
     """
     return db.exec(select(User).where(User.id == user_id)).first()
 
-def get_user_by_email(db : Session, user_email : str) -> Optional[User]:
+def get_user_by_email(db : Session, user_email : str, user_type : UserTypeEnum) -> Optional[User]:
     """
     Returns a User by an email
     """
-    return db.exec(select(User).where(User.email == user_email)).first()
+    return db.exec(select(User).where(User.email == user_email, User.type == user_type)).first()
 
 def get_all_users(db : Session) -> List[User]:
     """
@@ -47,7 +48,7 @@ def update_user(db : Session, user : User, user_in : UserUpdate) -> User:
     for key, value in user_in.model_dump(exclude_unset=True).items():
         if(key == "password"):
             value = get_password_hash(value)
-            
+
         setattr(user, key, value)
 
     db.add(user)

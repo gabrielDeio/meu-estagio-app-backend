@@ -15,7 +15,7 @@ def create_user_endpoint(user_in : UserCreate, db : Session = Depends(get_sessio
     """
     Endpoint to create a new User.
     """
-    existing_user = user_crud.get_user_by_email(db, user_email=user_in.email)
+    existing_user = user_crud.get_user_by_email(db, user_email=user_in.email, user_type=user_in.type)
     if existing_user:
         raise HTTPException( status_code=status.HTTP_409_CONFLICT, detail="User with this email already exists")
     
