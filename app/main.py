@@ -4,11 +4,13 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 
 from app.api.endpoints import users
+from app.api.endpoints import auth
 
 app = FastAPI()
 
 
 app.include_router(users.router)
+app.include_router(auth.router)
 
 class Item(BaseModel):
     name : str
