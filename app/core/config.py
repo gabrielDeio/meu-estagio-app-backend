@@ -1,6 +1,10 @@
 import os 
 from sqlmodel import create_engine
 from sqlalchemy.engine import Engine
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 DATABASE_URL : str | None = os.getenv("DATABASE_URL")
 
