@@ -4,7 +4,7 @@ from sqlmodel import Session
 from uuid import UUID
 
 from app.models.user import User
-from app.schemas.user_schema import UserCreate, UserUpdate
+from app.schemas.user_schema import UserCreate, UserUpdate, UserRead
 from app.db.session import get_session
 from app.crud import user_crud
 
@@ -22,14 +22,14 @@ def create_user_endpoint(user_in : UserCreate, db : Session = Depends(get_sessio
     return user_crud.create_user(db, user_in=user_in)
 
 
-@router.get("/", response_model=List[User])
+@router.get("/", response_model=List[UserRead])
 def get_users_endpoint(db : Session = Depends(get_session)):
     """
     Enpoint to get all Users stored in dabatase
     """
     return user_crud.get_all_users(db)
 
-@router.get("/{user_id}", response_model=User)
+@router.get("/{user_id}", response_model=UserRead)
 def get_user_endpoint(user_id : UUID, db : Session = Depends(get_session)):
     """
     Endpoint to get a specific user by his id
@@ -40,7 +40,7 @@ def get_user_endpoint(user_id : UUID, db : Session = Depends(get_session)):
     
     return user
 
-@router.patch("/{user_id}", response_model=User)
+@router.patch("/{user_id}", response_model=UserRead)
 def update_user_endpoint(user_id : UUID, user_in : UserUpdate, db : Session = Depends(get_session)):
     """
     Endpoint to update a user
