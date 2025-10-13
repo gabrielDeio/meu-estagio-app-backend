@@ -10,6 +10,9 @@ class UserTypeEnum(str, Enum):
 
 
 class User(SQLModel, table=True):
+    __tablename__ = "users"
+    __table_args__ = {"schema" : "core"}
+
     id : uuid.UUID  = Field(default_factory=uuid.uuid4, primary_key=True)
     name : str = Field()
     surname : str | None = Field(default=None)
