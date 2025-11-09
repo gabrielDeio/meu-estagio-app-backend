@@ -1,4 +1,4 @@
-from app.models.user import UserTypeEnum
+from app.models.users import UserTypeEnum
 from pydantic import BaseModel
 
 class AuthSchema(BaseModel):

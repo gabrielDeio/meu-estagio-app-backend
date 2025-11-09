@@ -9,7 +9,7 @@ class UserTypeEnum(str, Enum):
     SUPERVISOR = "SUPERVISOR"
 
 
-class User(SQLModel, table=True):
+class Users(SQLModel, table=True):
     __tablename__ = "users"
     __table_args__ = {"schema" : "core"}
 

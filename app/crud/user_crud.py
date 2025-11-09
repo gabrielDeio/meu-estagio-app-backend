@@ -2,46 +2,46 @@ from typing import List, Optional
 from uuid import UUID
 from sqlmodel import Session, select
 
-from app.models.user import User
+from app.models.users import Users
 from app.schemas.user_schema import UserCreate, UserUpdate
 from app.utils.hash import get_password_hash
-from app.models.user import UserTypeEnum
+from app.models.users import UserTypeEnum
 
-def get_user_by_id(db : Session, user_id : UUID) -> Optional[User]:
+def get_user_by_id(db : Session, user_id : UUID, user_type : UserTypeEnum) -> Optional[Users]:
     """
     Returns a User by an id
     """
-    return db.exec(select(User).where(User.id == user_id)).first()
+    return db.exec(select(Users).where(Users.id == user_id)).first()
 
-def get_user_by_email(db : Session, user_email : str, user_type : UserTypeEnum) -> Optional[User]:
+def get_user_by_email(db : Session, user_email : str, user_type : UserTypeEnum) -> Optional[Users]:
     """
     Returns a User by an email
     """
-    return db.exec(select(User).where(User.email == user_email, User.type == user_type)).first()
+    return db.exec(select(Users).where(Users.email == user_email, Users.type == user_type)).first()
 
-def get_all_users(db : Session) -> List[User]:
+def get_all_users(db : Session) -> List[Users]:
     """
     Returns all Users stored in db
     """
-    result =  db.exec(select(User)).all()
+    result =  db.exec(select(Users)).all()
 
     return list(result)
 
-def create_user(db : Session, user_in : UserCreate) -> User:
+def create_user(db : Session, user_in : UserCreate) -> Users:
     """
     Creates a new User
     """
     user_data = user_in.model_dump()
     user_data["password"] = get_password_hash(user_data["password"])
 
-    user = User(**user_data)
+    user = Users(**user_data)
 
     db.add(user)
     db.commit()
     db.refresh(user)
     return user
 
-def update_user(db : Session, user : User, user_in : UserUpdate) -> User:
+def update_user(db : Session, user : Users, user_in : UserUpdate) -> Users:
     """
     Updates a User
     """
@@ -56,7 +56,7 @@ def update_user(db : Session, user : User, user_in : UserUpdate) -> User:
     db.refresh(user)
     return user
 
-def delete_user(db : Session, user : User):
+def delete_user(db : Session, user : Users):
     """
     Deletes a User
     """
