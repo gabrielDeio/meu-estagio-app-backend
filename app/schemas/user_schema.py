@@ -4,7 +4,7 @@ from uuid import UUID
 from datetime import datetime
 
 
-from app.models.user import UserTypeEnum
+from app.models.users import UserTypeEnum
 
 class UserCreate(SQLModel):
     name : str
@@ -12,6 +12,10 @@ class UserCreate(SQLModel):
     email : str
     password : str
     type : UserTypeEnum
+    company_name : Optional[str] = None
+    cnpj : Optional[str]
+    code : Optional[str] = None
+    supervisor_max_amount : Optional[int] = 1
 
 class UserUpdate(SQLModel):
     name : Optional[str] = None
