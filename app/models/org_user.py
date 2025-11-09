@@ -1,7 +1,7 @@
 from sqlmodel import Field, SQLModel
 from datetime import datetime, timezone
 from typing import ClassVar
-from user import UserTypeEnum
+from app.schemas.user_schema import UserTypeEnum
 from enum import Enum
 import uuid
 
@@ -17,7 +17,7 @@ class OrgUser(SQLModel, table=True):
     __tablename__ : ClassVar[str] = "org_user" #type:ignore
 
     org_id : uuid.UUID  = Field(foreign_key="organization.id", primary_key=True)
-    user_id : uuid.UUID = Field(foreign_key="user.id", primary_key=True)
+    user_id : uuid.UUID = Field(foreign_key="core.users.id", primary_key=True)
     type : UserTypeEnum = Field(primary_key=True)
     role : RoleEnum = Field(default=None)
     status : StatusEnum = Field(default=StatusEnum.ACTIVE)
