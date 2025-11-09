@@ -8,6 +8,7 @@ class Organization(SQLModel, table=True):
     name : str = Field()
     supervisor_max_amount : int = Field()
     cnpj : str = Field()
+    code : str = Field()
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc), 
         sa_column_kwargs={"onupdate": None} 
