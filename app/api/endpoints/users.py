@@ -73,7 +73,7 @@ def update_user_endpoint(user_id : UUID, user_in : UserUpdate, db : Session = De
     Raises:
         HTTPException: If the user with the given id was not found.
     """
-    user = user_crud.get_user_by_id(db, user_id)
+    user = user_crud.get_user_by_id(db, user_id, user_type=user_in.type)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User was not found")
     
