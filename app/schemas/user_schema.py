@@ -13,7 +13,7 @@ class UserCreate(SQLModel):
     password : str
     type : UserTypeEnum
     company_name : Optional[str] = None
-    cnpj : Optional[str]
+    cnpj : Optional[str] = None
     code : Optional[str] = None
     supervisor_max_amount : Optional[int] = 1
 
