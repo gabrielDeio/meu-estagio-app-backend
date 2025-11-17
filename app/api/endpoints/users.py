@@ -3,11 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
 from uuid import UUID
 
-from app.models.users import Users
+from app.models.users import Users, UserTypeEnum
 from app.schemas.user_schema import UserCreate, UserUpdate, UserRead
 from app.db.session import get_session
 from app.crud import user_crud
 from services import user_service
+from app.core.security import get_current_user_priority, RoleGuard
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -29,7 +30,7 @@ def create_user_endpoint(user_in : UserCreate, db : Session = Depends(get_sessio
 
 
 @router.get("/", response_model=List[UserRead])
-def get_users_endpoint(db : Session = Depends(get_session)):
+def get_users_endpoint(db : Session = Depends(get_session), current_supervisor_user : Users = Depends(RoleGuard(required_role=UserTypeEnum.SUPERVISOR))):
     """
     Endpoint to get all users.
     
