@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlmodel import Session, select
 
 from app.models.activity import Activity
-from app.schemas.activity_schema import ActivityCreate, AtivityUpdate
+from app.schemas.activity_schema import ActivityCreate, ActivityUpdate
 
 def get_activity(db : Session, activity_id : UUID) -> Activity:
     """
@@ -53,7 +53,7 @@ def get_user_org_activities(db : Session, user_id : UUID, org_id : UUID) -> List
     
     return db.exec(statement).all()
 
-def create_activity(db : Session, activity_in : ActivityCreate) -> Activity:
+def create_activity(db : Session, activity_in : ActivityCreate, activity_id : UUID) -> Activity:
     """
     Creates a new Activity.
 
@@ -72,7 +72,7 @@ def create_activity(db : Session, activity_in : ActivityCreate) -> Activity:
 
     return activity
 
-def update_activity(db : Session, activity_in : AtivityUpdate):
+def update_activity(db : Session, activity_in : ActivityUpdate):
     """
     Updates an Activity.
 

@@ -11,10 +11,11 @@ class ActivityCreate(SQLModel):
     description: str
     start_time: datetime
     end_time: datetime
+    org_id : str
+    user_id : str
 
 
-class AtivityUpdate(SQLModel):
-    id : UUID
+class ActivityUpdate(SQLModel):
     name: Optional[str] = None
     description: Optional[str] = None
     start_time: Optional[datetime] = None

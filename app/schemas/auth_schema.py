@@ -10,3 +10,11 @@ class AuthSchema(BaseModel):
 class Token(BaseModel):
     access_token : str
     token_type : str
+
+class Current_User(BaseModel):
+    id : str
+    type : UserTypeEnum
+    org_id : str
+    email : str
+    name : str
+    org_id : str
