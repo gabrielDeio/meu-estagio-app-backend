@@ -1,3 +1,12 @@
+-- DROP SCHEMA core;
+
+CREATE SCHEMA core AUTHORIZATION "user";
+
+-- DROP TYPE core."usertypeenum";
+
+CREATE TYPE core."usertypeenum" AS ENUM (
+	'STUDENT',
+	'SUPERVISOR');
 -- core.organization definition
 
 -- Drop table
@@ -53,4 +62,28 @@ CREATE TABLE core.org_user (
 	CONSTRAINT org_user_pk PRIMARY KEY (org_id, user_id, type),
 	CONSTRAINT org_user_organization_fk FOREIGN KEY (org_id) REFERENCES core.organization(id),
 	CONSTRAINT org_user_users_fk FOREIGN KEY (user_id) REFERENCES core.users(id)
+);
+
+
+-- core.activity definition
+
+-- Drop table
+
+-- DROP TABLE core.activity;
+
+CREATE TABLE core.activity (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	organization_id uuid NOT NULL,
+	user_id uuid NOT NULL,
+	"name" varchar NOT NULL,
+	description text NOT NULL,
+	status varchar NOT NULL,
+	start_time timestamptz NOT NULL,
+	end_time timestamptz NOT NULL,
+	approved_by uuid NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT activity_pk PRIMARY KEY (id),
+	CONSTRAINT activity_organization_fk FOREIGN KEY (organization_id) REFERENCES core.organization(id),
+	CONSTRAINT activity_users_fk FOREIGN KEY (user_id) REFERENCES core.users(id),
+	CONSTRAINT activity_users_fk_1 FOREIGN KEY (approved_by) REFERENCES core.users(id)
 );
