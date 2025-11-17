@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from app.schemas.auth_schema import Token, AuthSchema
