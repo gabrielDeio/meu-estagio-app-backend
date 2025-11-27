@@ -5,8 +5,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from app.api.endpoints import users
-from app.api.endpoints import auth
+from app.api.endpoints import users, auth, activity
+
+
 
 origins = [
     "*"
@@ -24,6 +25,7 @@ app.add_middleware(
 
 app.include_router(users.router)
 app.include_router(auth.router)
+app.include_router(activity.router)
 
 class Item(BaseModel):
     name : str
