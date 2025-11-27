@@ -1,4 +1,4 @@
-from sqlmodel import Session, UUID, delete
+from sqlmodel import Session, UUID, delete, select
 
 from app.schemas.org_user_schema import OrgUserCreate, OrgUserUpdate
 from app.models.org_user import OrgUser, StatusEnum
@@ -73,3 +73,6 @@ def delete_all_user_relation(db : Session, user_id : UUID):
     db.commit()
 
     return
+
+def get_org_by_user_id(db : Session, user_id : UUID):
+    return db.exec(select(OrgUser).where(OrgUser.user_id == user_id)).first()
