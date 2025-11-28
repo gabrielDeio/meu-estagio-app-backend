@@ -4,6 +4,9 @@ from datetime import datetime, timezone
 
 
 class Organization(SQLModel, table=True):
+    __tablename__ = "organization"
+    __table_args__ = {"schema" : "core"}
+    
     id : uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     name : str = Field()
     supervisor_max_amount : int = Field()

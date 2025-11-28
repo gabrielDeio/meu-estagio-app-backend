@@ -53,7 +53,7 @@ def get_user_org_activities(db : Session, user_id : UUID, org_id : UUID) -> List
     
     return db.exec(statement).all()
 
-def create_activity(db : Session, activity_in : ActivityCreate, activity_id : UUID) -> Activity:
+def create_activity(db : Session, activity_in : ActivityCreate) -> Activity:
     """
     Creates a new Activity.
 
@@ -66,6 +66,7 @@ def create_activity(db : Session, activity_in : ActivityCreate, activity_id : UU
     """
     activity_data = activity_in.model_dump()
     activity = Activity(**activity_data)
+    activity.organization_id = activity_in.org_id
     db.add(activity)
     db.commit()
     db.refresh(activity)
