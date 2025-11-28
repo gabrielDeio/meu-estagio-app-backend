@@ -15,7 +15,12 @@ origins = [
 
 
 
-app = FastAPI()
+app = FastAPI(
+    redoc_url="/documentation",
+    title="My API",
+    description="API documentation with ReDoc",
+    version="1.0.0"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins = origins,
