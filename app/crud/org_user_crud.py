@@ -1,7 +1,9 @@
 from sqlmodel import Session, UUID, delete, select
+from sqlalchemy import text
 
 from app.schemas.org_user_schema import OrgUserCreate, OrgUserUpdate
 from app.models.org_user import OrgUser, StatusEnum
+from app.models.users import Users
 
 def create_org_user_relation(db : Session, org_user_in : OrgUserCreate) -> OrgUser:
     
@@ -75,4 +77,40 @@ def delete_all_user_relation(db : Session, user_id : UUID):
     return
 
 def get_org_by_user_id(db : Session, user_id : UUID):
+    """
+    Retrieves the organization associated with a given user id.
+
+    Args:
+        db (Session): The database session.
+        user_id (UUID): The id of the user to retrieve the organization for.
+
+    Returns:
+        OrgUser: The org_user relation associated with the given user id.
+    """
     return db.exec(select(OrgUser).where(OrgUser.user_id == user_id)).first()
+
+def get_supervisor_by_org_id(db: Session, org_id: UUID):
+    """
+    Retrieves the supervisor associated with a given organization id.
+
+    Args:
+        db (Session): The database session.
+        org_id (UUID): The id of the organization to retrieve the supervisor for.
+
+    Returns:
+        Tuple: A tuple containing the id, name, surname, email and type of the supervisor associated with the given organization id.
+    """
+    stmt = (
+        text("""
+            select u.id, u.name, u.surname, u.email, u.type 
+            from core.org_user ou
+            join core.users u on u.id = ou.user_id
+            where ou.org_id = :org_id and ou.type = 'SUPERVISOR'
+        """)
+        .bindparams(org_id=org_id)
+    )
+
+    result = db.exec(stmt).first()
+
+    return result
+    

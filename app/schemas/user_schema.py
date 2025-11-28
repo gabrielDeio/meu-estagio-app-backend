@@ -31,3 +31,10 @@ class UserRead(SQLModel):
     email: str
     type: UserTypeEnum
     created_at: datetime
+
+class UserWithoutPassword(SQLModel):
+    id: UUID
+    name: str
+    surname: Optional[str] = None
+    email: str
+    type: UserTypeEnum
