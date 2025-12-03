@@ -19,3 +19,4 @@ class OrganizationRead(SQLModel):
     supervisor_max_amount : int
     cnpj : str
     created_at: datetime
+    code : str
