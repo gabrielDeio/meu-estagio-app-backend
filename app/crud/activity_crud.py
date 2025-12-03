@@ -73,7 +73,7 @@ def create_activity(db : Session, activity_in : ActivityCreate) -> Activity:
 
     return activity
 
-def update_activity(db : Session, activity_in : ActivityUpdate):
+def update_activity(db : Session, activity_in : ActivityUpdate, activity_id : UUID):
     """
     Updates an Activity.
 
@@ -87,7 +87,7 @@ def update_activity(db : Session, activity_in : ActivityUpdate):
     Raises:
         HTTPException: If the Activity with the given id was not found.
     """
-    activity = get_activity(db, activity_in.id)
+    activity = get_activity(db, activity_id=activity_id)
     for key, value in activity_in.model_dump(exclude_unset=True).items():
         setattr(activity, key, value)
 
