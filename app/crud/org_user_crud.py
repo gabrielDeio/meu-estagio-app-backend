@@ -113,4 +113,30 @@ def get_supervisor_by_org_id(db: Session, org_id: UUID):
     result = db.exec(stmt).first()
 
     return result
+
+
+def get_students_organization(db : Session, org_id : UUID):
+    """
+    Retrieves all users associated with a given organization id.
+
+    Args:
+        db (Session): The database session.
+        org_id (UUID): The id of the organization to retrieve the users for.
+
+    Returns:
+        List[OrgUser]: A list of org_user relations associated with the given organization id.
+    """
     
+    stmt = (
+        text("""
+            select u.id, u.name, u.surname, u.email, u.type 
+            from core.org_user ou
+            join core.users u on u.id = ou.user_id
+            where ou.org_id = :org_id and ou.type = 'STUDENT'
+        """)
+        .bindparams(org_id=org_id)
+    )
+
+    result = db.exec(stmt).all()
+
+    return result

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session
 from uuid import UUID
+from typing import List
 
 from app.schemas.user_schema import UserWithoutPassword
 from app.schemas.organization_schema import OrganizationRead
@@ -38,3 +39,19 @@ def get_organization_supervisor(org_id : UUID, db : Session = Depends(get_sessio
         HTTPException: If the organization with the given id was not found.
     """
     return org_user_crud.get_supervisor_by_org_id(db, org_id)
+
+@router.get("/{org_id}/students", response_model=List[UserWithoutPassword])
+def get_students_organization(org_id : UUID, db : Session = Depends(get_session)):
+    """
+    Retrieves all students associated with a given organization id.
+
+    Args:
+        org_id (UUID): The id of the organization to retrieve the students for.
+
+    Returns:
+        List[UserWithoutPassword]: A list of all students associated with the given organization id.
+
+    Raises:
+        HTTPException: If the organization with the given id was not found.
+    """
+    return org_user_crud.get_students_organization(db, org_id)
