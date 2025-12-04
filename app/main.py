@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from app.api.endpoints import users, auth, activity, organization
+from app.api.endpoints import users, auth, activity, organization, report
 
 
 
@@ -32,6 +32,7 @@ app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(activity.router)
 app.include_router(organization.router)
+app.include_router(report.router)
 
 class Item(BaseModel):
     name : str
