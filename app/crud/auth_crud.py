@@ -36,7 +36,7 @@ def authenticate(db : Session, auth_in : AuthSchema) -> str:
 
     jwt = generate_access_token(data={"sub" : str(user.id), "type" : user.type})
 
-    userData = UserResponseSchema(id = user.id, name = user.name, email=user.email, type=user.type)
+    userData = UserResponseSchema(id = user.id, name = user.name,surname=user.surname, email=user.email, type=user.type)
 
 
     return LoginResponseSchema(access_token=jwt, token_type="Bearer", user=userData, org_id=org_user.org_id)

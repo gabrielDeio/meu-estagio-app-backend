@@ -11,6 +11,7 @@ class AuthSchema(BaseModel):
 class UserResponseSchema(BaseModel):
     id : UUID
     name : str
+    surname : str
     email : str
     type : UserTypeEnum
 
