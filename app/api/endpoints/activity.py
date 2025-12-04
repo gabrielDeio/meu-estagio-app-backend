@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
 from uuid import UUID
-from typing import List
+from typing import List, Optional
+from datetime import datetime
 
 from app.models.activity import Activity
 from app.schemas.activity_schema import ActivityCreate, ActivityUpdate
@@ -30,18 +31,36 @@ def create_activity_endpoint(activity_in : ActivityCreate, db : Session = Depend
     return activity_service.create_activity(activity_in, db)
 
 @router.get("/{org_id}/user/{user_id}", response_model=List[Activity])
-def get_user_activities_endpoint(org_id : UUID, user_id : UUID, db : Session = Depends(get_session)):
+def get_user_activities_endpoint(
+    org_id : UUID, 
+    user_id : UUID, 
+    initial_date : Optional[datetime] = None, 
+    end_date : Optional[datetime] = None, 
+    db : Session = Depends(get_session)
+):
+
     """
-    Retrieves all activities for a given user and organization.
+    Retrieves all activities for a given user and organization, 
+    filtered by the given initial and end dates.
 
     Args:
         org_id (UUID): The id of the organization.
         user_id (UUID): The id of the user.
+        initial_date (Optional[datetime]): The initial date for the filter.
+        end_date (Optional[datetime]): The end date for the filter.
+        db (Session): The database session.
 
     Returns:
-        Activity: A list of all activities for the user and organization.
+        List[activity]: A list of all activities for the user and organization, 
+        filtered by the given initial and end dates.
     """
-    return activity_crud.get_user_org_activities(db=db, user_id=user_id, org_id=org_id)
+    return activity_crud.get_user_org_activities(
+        db=db, 
+        user_id=user_id, 
+        org_id=org_id, 
+        start_date=initial_date, 
+        end_date=end_date
+    )
 
 @router.get("/{activity_id}", response_model=Activity)
 def get_activity_endpoint(activity_id : UUID, db : Session = Depends(get_session)):

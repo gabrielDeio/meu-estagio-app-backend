@@ -1,6 +1,7 @@
 from typing import List, Optional
 from uuid import UUID
 from sqlmodel import Session, select
+from datetime import datetime
 
 from app.models.activity import Activity
 from app.schemas.activity_schema import ActivityCreate, ActivityUpdate
@@ -34,22 +35,40 @@ def get_org_activities(db : Session, org_id : UUID) -> List[Activity]:
     """
     return db.exec(select(Activity).where(Activity.organization_id == org_id)).all()
 
-def get_user_org_activities(db : Session, user_id : UUID, org_id : UUID) -> List[Activity]:
+def get_user_org_activities(
+    db: Session, 
+    user_id: UUID, 
+    org_id: UUID, 
+    start_date: Optional[datetime] = None, 
+    end_date: Optional[datetime] = None
+) -> List[Activity]:
     """
-    Retrieves all activities for a given user and organization.
+    Retrieves all activities for a given user and organization, 
+    filtered by the given initial and end dates.
 
     Args:
         db (Session): A database session.
         user_id (UUID): The id of the user.
         org_id (UUID): The id of the organization.
+        start_date (Optional[datetime]): The initial date for the filter.
+        end_date (Optional[datetime]): The end date for the filter.
 
     Returns:
-        List[activity]: A list of all activities for the user and organization.
+        List[activity]: A list of all activities for the user and organization, 
+        filtered by the given initial and end dates.
     """
-    statement = select(Activity).where(
+    conditions = [
         Activity.organization_id == org_id,
         Activity.user_id == user_id
-    )
+    ]
+    
+    if start_date:
+        conditions.append(Activity.start_time >= start_date)
+    
+    if end_date:
+        conditions.append(Activity.start_time <= end_date)
+    
+    statement = select(Activity).where(*conditions)
     
     return db.exec(statement).all()
 
